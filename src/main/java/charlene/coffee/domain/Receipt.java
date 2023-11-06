@@ -58,16 +58,16 @@ public class Receipt {
     }
 
     public double getReceiptTotalPrice(){
-        double receiptTotalPrice = 0;
+        double receiptTotalPrice = 0.00;
 
         for(var orderItem : orderItems)
             receiptTotalPrice += orderItem.getTotalPrice();
 
-        return receiptTotalPrice - getReceiptTotalBonuses();
+        return round(receiptTotalPrice - getReceiptTotalBonuses());
     }
 
     public double getReceiptTotalTax(){
-        double receiptTotalTax = 0;
+        double receiptTotalTax = 0.00;
 
         for(var orderItem : orderItems)
             receiptTotalTax += orderItem.getTotalTax();
@@ -75,14 +75,18 @@ public class Receipt {
         for(var bonusItem : getBonusItems())
             receiptTotalTax -= bonusItem.getTotalTax();
 
-        return receiptTotalTax;
+        return round(receiptTotalTax);
     }
 
     public double getReceiptTotalBonuses(){
-        double totalBonuses = 0;
+        double totalBonuses = 0.00;
         for(var bonusItem : getBonusItems())
             totalBonuses += bonusItem.getTotalPrice();
 
-        return totalBonuses;
+        return round(totalBonuses);
+    }
+
+    private static double round(double number){
+        return Math.round(number*100.0)/100.0;
     }
 }
