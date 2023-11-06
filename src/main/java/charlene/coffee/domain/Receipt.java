@@ -24,6 +24,10 @@ public class Receipt {
         return orderItems;
     }
 
+    public void resetOrderItems(){
+        orderItems.clear();
+    }
+
     public List<OrderItem> getBonusItems() {
         var bonusItems = new ArrayList<OrderItem>();
 
