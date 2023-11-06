@@ -36,6 +36,14 @@ public class PosServiceTest {
     }
 
     @Test
+    public void testResetCurrentReceipt(){
+        posService.order(new String[]{"3", "6"});
+        Assertions.assertTrue(posService.getCurrentReceipt().getOrderItems().stream().count() == 2);
+        posService.resetCurrentReceipt();
+        Assertions.assertTrue(posService.getCurrentReceipt().getOrderItems().stream().count() == 0);
+    }
+
+    @Test
     public void testReceiptWithoutBonuses(){
         // Order large coffee with extra milk
         posService.order(new String[]{"3", "6"});
