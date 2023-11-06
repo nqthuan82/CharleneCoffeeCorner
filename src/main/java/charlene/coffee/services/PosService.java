@@ -49,6 +49,23 @@ public class PosService {
         currentReceipt.setFifthBeverage(true);
     }
 
+    public void resetCurrentReceipt(){
+        currentReceipt.resetOrderItems();
+    }
+
+    public void printProductsList(){
+        System.out.println("\n---------- List of products ----------\n");
+        System.out.format("%-3s \t %-22s %-7s\n", "ID", "Name", "Price");
+        for(var p: products){
+            System.out.format("%-3s\t %-22s %5.2f %s\n",
+                    p.getId(),
+                    p.getName(),
+                    p.getPrice(),
+                    currency);
+        }
+        System.out.println("--------------------------------------\n");
+    }
+
     public void printReceipt(){
         System.out.println("\n\n\n\t\t\t\t\t Coffee Corner");
         System.out.println("\t\t\t\t\t   Charlene");
@@ -72,15 +89,18 @@ public class PosService {
                 currency);
         }
 
-        System.out.format("\nBonuses: \n");
-        for(var bonusItem: currentReceipt.getBonusItems()){
-            var product = bonusItem.getProduct();
-            System.out.format("%3dx\t %-30s %-10s %5.2f %s\n",
-                    bonusItem.getProductQty(),
-                    bonusItem.getName(),
-                    product.getPriceWithCurrency(),
-                    -bonusItem.getTotalPrice(),
-                    currency);
+        var bonuses = currentReceipt.getBonusItems();
+        if(bonuses.stream().count() > 0){
+            System.out.format("\nBonuses: \n");
+            for(var bonusItem: bonuses){
+                var product = bonusItem.getProduct();
+                System.out.format("%3dx\t %-30s %-10s %5.2f %s\n",
+                        bonusItem.getProductQty(),
+                        bonusItem.getName(),
+                        product.getPriceWithCurrency(),
+                        -bonusItem.getTotalPrice(),
+                        currency);
+            }
         }
 
         System.out.format("\n-------------------------------------------------------------\n");
@@ -93,8 +113,5 @@ public class PosService {
                 currentReceipt.getReceiptTotalTax(),
                 currency);
         System.out.println("\n\n\n");
-
-        // Reset current receipt after printting
-        currentReceipt.resetOrderItems();
     }
 }
