@@ -20,40 +20,50 @@ public class Receipt {
         orderItems.add(orderItem);
     }
 
-    public List<OrderItem> getReceiptItems() {
-        var receiptItems = new ArrayList<>(orderItems);
+    public List<OrderItem> getOrderItems(){
+        return orderItems;
+    }
+
+    public List<OrderItem> getBonusItems() {
+        var bonusItems = new ArrayList<OrderItem>();
 
         // Apply fifth beverage bonus
         if(isFifthBeverage){
             var firstBeverage = orderItems.stream().filter(item -> item.getProduct().getCategory() == ProductCategory.BEVERAGE).findFirst().orElse(null);
             if(firstBeverage != null)
-                receiptItems.add(new OrderItem(firstBeverage.getProduct(), true));
+                bonusItems.add(new OrderItem(firstBeverage.getProduct(), true));
         }
 
         // Apply extra bonus
         if(orderItems.stream().anyMatch(item -> item.getProduct().getCategory() == ProductCategory.SNACK)){
             var firstExtra = orderItems.stream().filter(item -> item.getProduct().getCategory() == ProductCategory.EXTRAS).findFirst().orElse(null);
             if(firstExtra != null)
-                receiptItems.add(new OrderItem(firstExtra.getProduct(), true));
+                bonusItems.add(new OrderItem(firstExtra.getProduct(), true));
         }
-        return receiptItems;
+        return bonusItems;
     }
 
     public double getReceiptTotalPrice(){
-        var receiptItems = getReceiptItems();
         double receiptTotalPrice = 0;
-        for(OrderItem item : receiptItems){
-            receiptTotalPrice += item.getReceiptItemTotalPrice();
-        }
+
+        for(var orderItem : orderItems)
+            receiptTotalPrice += orderItem.getTotalPrice();
+
+        for(var bonusItem : getBonusItems())
+            receiptTotalPrice -= bonusItem.getTotalPrice();
+
         return receiptTotalPrice;
     }
 
     public double getReceiptTotalTax(){
-        var receiptItems = getReceiptItems();
         double receiptTotalTax = 0;
-        for(OrderItem item : receiptItems){
-            receiptTotalTax += item.getReceiptItemTotalTax();
-        }
+
+        for(var orderItem : orderItems)
+            receiptTotalTax += orderItem.getTotalTax();
+
+        for(var bonusItem : getBonusItems())
+            receiptTotalTax -= bonusItem.getTotalTax();
+
         return receiptTotalTax;
     }
 }

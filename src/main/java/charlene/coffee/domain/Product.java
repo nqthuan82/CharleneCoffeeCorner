@@ -36,10 +36,6 @@ public class Product {
         return price;
     }
 
-    public String getTaxRateInPercent(){
-        return String.format("%2.2f%%", 100 * taxRate);
-    }
-
     public double getTax()
     {
         return taxRate*price/(1 + taxRate);

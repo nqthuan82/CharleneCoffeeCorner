@@ -28,15 +28,15 @@ public class OrderItem {
         return productQty;
     }
 
-    public double getReceiptItemTotalPrice(){
-        return (isBonus ? -1 : 1) * product.getPrice() * productQty;
+    public double getTotalPrice(){
+        return product.getPrice() * productQty;
     }
 
-    public double getReceiptItemTotalTax(){
-        return (isBonus ? -1 : 1) * product.getTax() * productQty;
+    public double getTotalTax(){
+        return product.getTax() * productQty;
     }
 
-    public String getReceiptItemName(){
+    public String getName(){
         return isBonus ? String.format("%s (Bonus)", product.getName()) : product.getName();
     }
 }
