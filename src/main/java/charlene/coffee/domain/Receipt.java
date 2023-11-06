@@ -63,10 +63,7 @@ public class Receipt {
         for(var orderItem : orderItems)
             receiptTotalPrice += orderItem.getTotalPrice();
 
-        for(var bonusItem : getBonusItems())
-            receiptTotalPrice -= bonusItem.getTotalPrice();
-
-        return receiptTotalPrice;
+        return receiptTotalPrice - getReceiptTotalBonuses();
     }
 
     public double getReceiptTotalTax(){
@@ -79,5 +76,13 @@ public class Receipt {
             receiptTotalTax -= bonusItem.getTotalTax();
 
         return receiptTotalTax;
+    }
+
+    public double getReceiptTotalBonuses(){
+        double totalBonuses = 0;
+        for(var bonusItem : getBonusItems())
+            totalBonuses += bonusItem.getTotalPrice();
+
+        return totalBonuses;
     }
 }

@@ -31,6 +31,10 @@ public class PosService {
         );
     }
 
+    public Receipt getCurrentReceipt() {
+        return currentReceipt;
+    }
+
     public void order(String[] productIds){
         for(var pId: productIds)
             order(pId);
