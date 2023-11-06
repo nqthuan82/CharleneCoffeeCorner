@@ -37,21 +37,21 @@ public class PosService {
     }
 
     public void printReceipt(){
-        System.out.println("\n\n\n\t\t\t\t Coffee Corner");
-        System.out.println("\t\t\t\t   Charlene");
-        System.out.println("\t\t Zollikerstrasse 788, 8008 Zurich");
-        System.out.println("\n\t\t\tTelephone: (+41) 0442520353");
-        System.out.println("\t\t\t  CHE-101.397.516 VAT");
+        System.out.println("\n\n\n\t\t\t\t\t Coffee Corner");
+        System.out.println("\t\t\t\t\t   Charlene");
+        System.out.println("\t\t\t Zollikerstrasse 788, 8008 Zurich");
+        System.out.println("\n\t\t\t\tTelephone: (+41) 0442520353");
+        System.out.println("\t\t\t\t  CHE-101.397.516 VAT");
         //format of date and time
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss      dd.MM.yy");
         Date date = new Date();
         //prints current date and time
-        System.out.format("\n\nReceipt-Nr: %6d \t\t %s\n", currentReceipt.getNumber(), formatter.format(date));
+        System.out.format("\n\nReceipt-Nr: %6d \t\t\t\t\t %s\n", currentReceipt.getNumber(), formatter.format(date));
 
-        System.out.format("\n-----------------------------------------------------\n");
+        System.out.format("\n-------------------------------------------------------------\n");
         for(var orderItem: currentReceipt.getOrderItems()){
             var product = orderItem.getProduct();
-            System.out.format("%3dx\t %-22s %-10s %5.2f %s\n",
+            System.out.format("%3dx\t %-30s %-10s %5.2f %s\n",
                 orderItem.getProductQty(),
                 orderItem.getName(),
                 product.getPriceWithCurrency(),
@@ -62,18 +62,18 @@ public class PosService {
         System.out.format("\nBonuses: \n");
         for(var bonusItem: currentReceipt.getBonusItems()){
             var product = bonusItem.getProduct();
-            System.out.format("%3dx\t %-22s %-10s %5.2f %s\n",
+            System.out.format("%3dx\t %-30s %-10s %5.2f %s\n",
                     bonusItem.getProductQty(),
                     bonusItem.getName(),
                     product.getPriceWithCurrency(),
                     -bonusItem.getTotalPrice(),
                     currency);
         }
-        
-        System.out.format("\n-----------------------------------------------------\n");
-        System.out.format("\t\t\tSum: %5.2f %s", currentReceipt.getReceiptTotalPrice(), currency);
-        
-        System.out.format("\n-----------------------------------------------------\n");
+
+        System.out.format("\n-------------------------------------------------------------\n");
+        System.out.format("\t\t\t\t\tSUM: %5.2f %s", currentReceipt.getReceiptTotalPrice(), currency);
+
+        System.out.format("\n-------------------------------------------------------------\n");
         System.out.format("\nIncl. VAT %2.2f%% \t %5.2f \t = %5.2f %s",
                 (taxRate*100),
                 currentReceipt.getReceiptTotalPrice(),
