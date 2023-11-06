@@ -33,14 +33,24 @@ public class Receipt {
 
         // Apply fifth beverage bonus
         if(isFifthBeverage){
-            var firstBeverage = orderItems.stream().filter(item -> item.getProduct().getCategory() == ProductCategory.BEVERAGE).findFirst().orElse(null);
+            var firstBeverage = orderItems.stream()
+                .filter(item -> item.getProduct().getCategory() == ProductCategory.BEVERAGE)
+                .sorted((a ,b) -> b.getProduct().getPrice() > a.getProduct().getPrice() ? 1 : -1)
+                .findFirst()
+                .orElse(null);
+
             if(firstBeverage != null)
                 bonusItems.add(new OrderItem(firstBeverage.getProduct(), true));
         }
 
         // Apply extra bonus
         if(orderItems.stream().anyMatch(item -> item.getProduct().getCategory() == ProductCategory.SNACK)){
-            var firstExtra = orderItems.stream().filter(item -> item.getProduct().getCategory() == ProductCategory.EXTRAS).findFirst().orElse(null);
+            var firstExtra = orderItems.stream()
+                .filter(item -> item.getProduct().getCategory() == ProductCategory.EXTRAS)
+                .sorted((a ,b) -> b.getProduct().getPrice() > a.getProduct().getPrice() ? 1 : -1)
+                .findFirst()
+                .orElse(null);
+
             if(firstExtra != null)
                 bonusItems.add(new OrderItem(firstExtra.getProduct(), true));
         }
