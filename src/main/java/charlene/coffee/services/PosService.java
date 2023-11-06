@@ -1,5 +1,6 @@
 package charlene.coffee.services;
 import charlene.coffee.domain.Receipt;
+import charlene.coffee.domain.OrderItem;
 import charlene.coffee.domain.Product;
 import charlene.coffee.domain.ProductCategory;
 import java.text.SimpleDateFormat;
@@ -11,9 +12,11 @@ public class PosService {
     private final List<Product> products;
     private final String currency = "CHF";
     private final double taxRate  =  0.025;
+    private Receipt currentReceipt;
 
     public PosService()
     {
+        currentReceipt = new Receipt();
         products = new ArrayList<>(
             List.of(
                 new Product("CS1", "Coffee small", 2.50, ProductCategory.BEVERAGE, currency, taxRate),
@@ -28,11 +31,12 @@ public class PosService {
         );
     }
 
-    public Receipt CreateReceipt(){
-        return new Receipt();
+    public void order(String productId){
+        var product = products.stream().filter(p -> p.getId().equalsIgnoreCase(productId)).findFirst().orElseThrow();
+        currentReceipt.addOrder(new OrderItem(product));
     }
 
-    public void printReceipt(Receipt receipt){
+    public void printReceipt(){
         System.out.println("\n\n\n\t\t\t\t Coffee Corner");
         System.out.println("\t\t\t\t   Charlene");
         System.out.println("\t\t Zollikerstrasse 788, 8008 Zurich");
@@ -42,10 +46,10 @@ public class PosService {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss      dd.MM.yy");
         Date date = new Date();
         //prints current date and time
-        System.out.format("\n\nReceipt-Nr: %6d \t\t %s\n", receipt.getNumber(), formatter.format(date));
+        System.out.format("\n\nReceipt-Nr: %6d \t\t %s\n", currentReceipt.getNumber(), formatter.format(date));
 
         System.out.format("\n-----------------------------------------------------\n");
-        for(var orderItem: receipt.getOrderItems()){
+        for(var orderItem: currentReceipt.getOrderItems()){
             var product = orderItem.getProduct();
             System.out.format("%3dx\t %-22s %-10s %5.2f %s\n",
                 orderItem.getProductQty(),
@@ -54,8 +58,9 @@ public class PosService {
                 orderItem.getTotalPrice(),
                 currency);
         }
+
         System.out.format("\nBonuses: \n");
-        for(var bonusItem: receipt.getBonusItems()){
+        for(var bonusItem: currentReceipt.getBonusItems()){
             var product = bonusItem.getProduct();
             System.out.format("%3dx\t %-22s %-10s %5.2f %s\n",
                     bonusItem.getProductQty(),
@@ -64,18 +69,19 @@ public class PosService {
                     -bonusItem.getTotalPrice(),
                     currency);
         }
+        
         System.out.format("\n-----------------------------------------------------\n");
-        System.out.format("\t\t\tSum: %5.2f %s", receipt.getReceiptTotalPrice(), currency);
+        System.out.format("\t\t\tSum: %5.2f %s", currentReceipt.getReceiptTotalPrice(), currency);
+        
         System.out.format("\n-----------------------------------------------------\n");
         System.out.format("\nIncl. VAT %2.2f%% \t %5.2f \t = %5.2f %s",
                 (taxRate*100),
-                receipt.getReceiptTotalPrice(),
-                receipt.getReceiptTotalTax(),
+                currentReceipt.getReceiptTotalPrice(),
+                currentReceipt.getReceiptTotalTax(),
                 currency);
         System.out.println("\n\n\n");
-    }
 
-    public Product getProductById(String productId){
-        return products.stream().filter(p -> p.getId().equalsIgnoreCase(productId)).findFirst().orElseThrow();
+        // Reset current receipt after printting
+        currentReceipt.resetOrderItems();
     }
 }
