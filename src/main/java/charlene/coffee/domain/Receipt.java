@@ -31,11 +31,11 @@ public class Receipt {
     public List<OrderItem> getBonusItems() {
         var bonusItems = new ArrayList<OrderItem>();
 
-        // Apply fifth beverage bonus
+        // Apply fifth beverage bonus (if there are more than one beverage, give bonus with the cheapest one)
         if(isFifthBeverage){
             var firstBeverage = orderItems.stream()
                 .filter(item -> item.getProduct().getCategory() == ProductCategory.BEVERAGE)
-                .sorted((a ,b) -> b.getProduct().getPrice() > a.getProduct().getPrice() ? 1 : -1)
+                .sorted((a ,b) -> b.getProduct().getPrice() > a.getProduct().getPrice() ? -1 : 1)
                 .findFirst()
                 .orElse(null);
 
@@ -43,11 +43,11 @@ public class Receipt {
                 bonusItems.add(new OrderItem(firstBeverage.getProduct(), true));
         }
 
-        // Apply extra bonus
+        // Apply extra bonus (if there are more than one extra, give bonus with the cheapest one)
         if(orderItems.stream().anyMatch(item -> item.getProduct().getCategory() == ProductCategory.SNACK)){
             var firstExtra = orderItems.stream()
                 .filter(item -> item.getProduct().getCategory() == ProductCategory.EXTRAS)
-                .sorted((a ,b) -> b.getProduct().getPrice() > a.getProduct().getPrice() ? 1 : -1)
+                .sorted((a ,b) -> b.getProduct().getPrice() > a.getProduct().getPrice() ? -1 : 1)
                 .findFirst()
                 .orElse(null);
 
