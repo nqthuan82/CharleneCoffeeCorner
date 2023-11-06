@@ -36,6 +36,10 @@ public class PosService {
         currentReceipt.addOrder(new OrderItem(product));
     }
 
+    public void bonusFifthBeverage(){
+        currentReceipt.setFifthBeverage(true);
+    }
+
     public void printReceipt(){
         System.out.println("\n\n\n\t\t\t\t\t Coffee Corner");
         System.out.println("\t\t\t\t\t   Charlene");
