@@ -8,8 +8,8 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PosServiceTest {
-    private  PosService posService;
-    private HashMap<String, Double> productPricesList;
+    private  final PosService posService;
+    private final HashMap<String, Double> productPricesList;
 
     public PosServiceTest(){
         posService = new PosService();
@@ -102,7 +102,7 @@ public class PosServiceTest {
 
         var receipt = posService.getCurrentReceipt();
 
-        // Has free small coffee (cheapest beverage) and extra milk (cheapest extra)
+        // Has free small coffee (the cheapest beverage) and extra milk (the cheapest extra)
         Assertions.assertEquals(productPricesList.get("1") + productPricesList.get("6"), receipt.getReceiptTotalBonuses());
         // Must pay for large coffee, orange juice, Bacon Roll and special roast extra
         Assertions.assertEquals(productPricesList.get("3") + productPricesList.get("4") + productPricesList.get("5") + productPricesList.get("8"), receipt.getReceiptTotalPrice());
