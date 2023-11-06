@@ -19,16 +19,21 @@ public class PosService {
         currentReceipt = new Receipt();
         products = new ArrayList<>(
             List.of(
-                new Product("CS1", "Coffee small", 2.50, ProductCategory.BEVERAGE, currency, taxRate),
-                new Product("CM1", "Coffee medium", 3.00, ProductCategory.BEVERAGE, currency, taxRate),
-                new Product("CL1", "Coffee large", 3.50, ProductCategory.BEVERAGE, currency, taxRate),
-                new Product("JO1", "Orange juice", 3.95, ProductCategory.BEVERAGE, currency, taxRate),
-                new Product("SBR", "Bacon Roll", 4.50, ProductCategory.SNACK, currency, taxRate),
-                new Product("XC1", "Extra milk", 0.30, ProductCategory.EXTRAS, currency, taxRate),
-                new Product("XC2", "Foamed milk", 0.50, ProductCategory.EXTRAS, currency, taxRate),
-                new Product("XC3", "Special roast coffee", 0.90, ProductCategory.EXTRAS, currency, taxRate)
+                new Product("1", "Coffee small", 2.50, ProductCategory.BEVERAGE, currency, taxRate),
+                new Product("2", "Coffee medium", 3.00, ProductCategory.BEVERAGE, currency, taxRate),
+                new Product("3", "Coffee large", 3.50, ProductCategory.BEVERAGE, currency, taxRate),
+                new Product("4", "Orange juice", 3.95, ProductCategory.BEVERAGE, currency, taxRate),
+                new Product("5", "Bacon Roll", 4.50, ProductCategory.SNACK, currency, taxRate),
+                new Product("6", "Extra milk", 0.30, ProductCategory.EXTRAS, currency, taxRate),
+                new Product("7", "Foamed milk", 0.50, ProductCategory.EXTRAS, currency, taxRate),
+                new Product("8", "Special roast coffee", 0.90, ProductCategory.EXTRAS, currency, taxRate)
             )
         );
+    }
+
+    public void order(String[] productIds){
+        for(var pId: productIds)
+            order(pId);
     }
 
     public void order(String productId){
