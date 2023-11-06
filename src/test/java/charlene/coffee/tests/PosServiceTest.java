@@ -8,11 +8,13 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PosServiceTest {
-    private  final PosService posService;
+    private final PosService posService;
     private final HashMap<String, Double> productPricesList;
 
     public PosServiceTest(){
         posService = new PosService();
+        posService.resetCurrentReceipt();
+
         productPricesList = new HashMap<>() {{
             put("1", 2.50); // Coffee small
             put("2", 3.00); // Coffee medium
@@ -88,7 +90,7 @@ public class PosServiceTest {
     }
 
     @Test
-    public void testReceiptComplex(){
+    public void testComplexReceipt(){
         // Order large coffee with extra milk
         posService.order(new String[]{"3", "6"});
         // Order small coffee with special roast
